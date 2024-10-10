@@ -3,12 +3,13 @@ use std::{fs::File, io::Write, thread::sleep};
 use sysinfo::System;
 
 const WAIT_TIME: time::Duration = time::Duration::from_secs(10);
+const LOG_FILENAME: &'static str = "log.txt";
 
 fn main() {
-  let thread = std::thread::spawn(move || {
+  let log_thread = std::thread::spawn(move || {
     log_processes_list();
   });
-  let _result = thread.join();
+  let _result = log_thread.join();
 }
 
 fn log_processes_list() {
@@ -26,7 +27,7 @@ fn log_processes_list() {
 }
 
 fn rewrite_log_list(process_list: String) {
-  let mut file = File::create("log.txt").unwrap();
+  let mut file = File::create(LOG_FILENAME).unwrap();
   file.write_all(process_list.as_bytes()).unwrap();
 }
 
